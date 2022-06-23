@@ -34,7 +34,7 @@ class UserService {
       }
     }
 
-    const token: string = sign({ ...user }, 'fafa', {
+    const token: string = sign({ ...user }, process.env.SECRET_KEY, {
       expiresIn: '1h',
     })
 

@@ -2,8 +2,6 @@ import { Response } from 'express'
 
 type TMessage = string | Record<string, any>
 
-// {[key: string]: any} => Record<string, any>
-
 class ErrorHandler {
   public statusCode: number
   public message: TMessage

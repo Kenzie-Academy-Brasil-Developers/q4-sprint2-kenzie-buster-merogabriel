@@ -5,18 +5,18 @@ const buyDvdSchema = yup.object().shape({
 })
 
 const serializedBuyDvdSchema = yup.object().shape({
-  id: yup.string(),
+  cart_id: yup.string(),
   total: yup.string(),
   paid: yup.boolean().default(false),
   newUser: yup.object().shape({
-    id: yup.string().uuid().required(),
+    user_id: yup.string().uuid().required(),
     name: yup.string().required(),
     email: yup.string().email().required(),
     isAdm: yup.boolean().required(),
   }),
   dvds: yup.array().of(
     yup.object().shape({
-      id: yup.string().uuid().required(),
+      dvd_id: yup.string().uuid().required(),
       name: yup.string().required(),
       duration: yup.string().required(),
     })

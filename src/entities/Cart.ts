@@ -2,18 +2,18 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
-  OneToMany,
   OneToOne,
+  ManyToMany,
+  JoinTable,
   JoinColumn,
 } from 'typeorm'
 import { Dvd } from './Dvd'
 import { User } from './User'
 
-@Entity('cart')
+@Entity('carts')
 export class Cart {
   @PrimaryGeneratedColumn('uuid')
-  id?: string
+  cart_id?: string
 
   @Column({ default: false })
   paid?: boolean
@@ -21,10 +21,11 @@ export class Cart {
   @Column({ type: 'float' })
   total: number
 
-  @OneToOne(() => User, (user) => user)
+  @OneToOne(() => User, (user) => user.cart, { nullable: true })
   @JoinColumn()
-  newUser: User
+  user: User
 
-  @ManyToMany(() => Dvd, (dvd) => dvd)
+  @ManyToMany(() => Dvd, (dvd) => dvd.carts, { eager: true, nullable: true })
+  @JoinTable()
   dvds: Dvd[]
 }

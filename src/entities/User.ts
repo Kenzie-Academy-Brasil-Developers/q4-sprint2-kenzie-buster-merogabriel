@@ -1,25 +1,26 @@
 import { compare } from 'bcrypt'
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm'
+import { Cart } from './Cart'
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id?: string
+  user_id?: string
 
   @Column()
   name: string
 
-  @Column({ unique: true })
+  @Column()
   email: string
-
-  @Column({ default: false })
-  isAdm?: boolean
 
   @Column()
   password: string
 
-  // @OneToOne(() => Cart, (cart) => cart.user)
-  // cart: Cart
+  @Column({ default: false })
+  isAdm?: boolean
+
+  @OneToOne(() => Cart, (cart) => cart.user, { eager: true })
+  cart: Cart
 
   comparePwd = async (pwdString: string): Promise<boolean> => {
     return await compare(pwdString, this.password)

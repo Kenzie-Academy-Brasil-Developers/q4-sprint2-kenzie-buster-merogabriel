@@ -1,10 +1,10 @@
 import { User, Dvd, Stock } from '../entities'
-import { TDvd } from '../types'
+import { TCreateDvd, TDvd } from '../types'
 
 declare global {
   namespace Express {
     interface Request {
-      validated: User | TDvd | Stock
+      validated: User | TDvd | Stock | TCreateDvd
       decoded: User
       dvd: Dvd
     }

@@ -7,11 +7,11 @@ const payCartSchema = yup.object().shape({
       yup
         .object()
         .shape({
-          id: yup.string().required(),
+          cart_id: yup.string().required(),
           paid: yup.boolean().required(),
           total: yup.number().positive().required(),
           dvd: yup.object().shape({
-            id: yup.string().required(),
+            dvd_id: yup.string().required(),
             name: yup.string().required(),
             duration: yup.string().required(),
           }),

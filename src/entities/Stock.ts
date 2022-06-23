@@ -10,7 +10,7 @@ import { Dvd } from './Dvd'
 @Entity('stock')
 export class Stock {
   @PrimaryGeneratedColumn('uuid')
-  id?: string
+  stock_id?: string
 
   @Column()
   quantity: number
@@ -18,7 +18,7 @@ export class Stock {
   @Column({ type: 'float' })
   price: number
 
-  @OneToOne(() => Dvd, (dvd) => dvd.stock, { eager: true })
+  @OneToOne(() => Dvd, (dvd) => dvd.stock)
   @JoinColumn()
   dvd: Dvd
 }

@@ -20,6 +20,11 @@ dvdRouter.post(
   dvdController.registerDvds
 )
 
-dvdRouter.post('/buy/:dvdUuid', validateToken, checkStock)
+dvdRouter.post(
+  '/buy/:dvdUuid',
+  validateToken,
+  checkStock,
+  dvdController.buyDvds
+)
 
 export default dvdRouter

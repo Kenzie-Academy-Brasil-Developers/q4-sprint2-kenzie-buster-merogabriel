@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from 'express'
 import { JwtPayload, verify, VerifyErrors } from 'jsonwebtoken'
 import { User } from '../entities'
 import { ErrorHandler } from '../errors'
+import * as dotenv from 'dotenv'
+
+dotenv.config()
 
 const validateRegisterUserToken = async (
   req: Request,
@@ -20,7 +23,7 @@ const validateRegisterUserToken = async (
 
   return verify(
     token,
-    'fafa',
+    process.env.SECRET_KEY,
     (err: VerifyErrors, decoded: string | JwtPayload) => {
       req.decoded = decoded as User
 

@@ -8,7 +8,7 @@ const registerUserSchema = yup.object().shape({
 })
 
 const serializedRegisterUserSchema = yup.object().shape({
-  id: yup.string().uuid().required(),
+  user_id: yup.string().uuid().required(),
   name: yup.string().required(),
   email: yup.string().email().required(),
   isAdm: yup.boolean().required(),

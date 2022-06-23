@@ -17,25 +17,23 @@ const registerDvdSchema = yup.object().shape({
     .required(),
 })
 
-const serializedRegisterDvdSchema = yup.object().shape({
-  dvds: yup
-    .array()
-    .of(
-      yup
-        .object()
-        .shape({
-          id: yup.string().required(),
-          name: yup.string().required(),
-          duration: yup.string().required(),
-          stock: yup.object().shape({
-            id: yup.string().nullable(),
-            quantity: yup.number().positive().nullable(),
-            price: yup.number().positive().nullable(),
-          }),
-        })
-        .required()
-    )
-    .required(),
-})
+const serializedRegisterDvdSchema = yup
+  .array()
+  .of(
+    yup
+      .object()
+      .shape({
+        dvd_id: yup.string().required(),
+        name: yup.string().required(),
+        duration: yup.string().required(),
+        stock: yup.object().shape({
+          stock_id: yup.string(),
+          quantity: yup.number(),
+          price: yup.number(),
+        }),
+      })
+      .required()
+  )
+  .required()
 
 export { registerDvdSchema, serializedRegisterDvdSchema }

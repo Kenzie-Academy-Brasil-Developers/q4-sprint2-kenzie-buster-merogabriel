@@ -1,8 +1,5 @@
-const hello = () => {
-  return { hello: 'world' }
-}
-
 import userController from './user.controller'
 import dvdController from './dvd.controller'
+import cartController from './cart.controller'
 
-export { hello, userController, dvdController }
+export { userController, cartController, dvdController }

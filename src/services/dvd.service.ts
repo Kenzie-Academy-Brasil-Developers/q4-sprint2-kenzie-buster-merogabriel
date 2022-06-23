@@ -1,8 +1,9 @@
 import { Request } from 'express'
+import { Dvd } from '../entities'
 import { ErrorHandler } from '../errors'
 import { dvdRepository, stockRepository } from '../repositories'
-import { serializedRegisterDvdSchema, getAllDvdsSchema } from '../schemas'
-import { TDvd } from '../types'
+import { serializedRegisterDvdSchema } from '../schemas'
+import { TDvd, TCreateDvd } from '../types'
 
 class DvdService {
   registerDvds = async ({ validated }: Request) => {
@@ -10,20 +11,28 @@ class DvdService {
       throw new ErrorHandler(400, 'No DVD to be added.')
     }
 
-    const dvds = await dvdRepository.saveMany((validated as TDvd).dvds)
+    const dvds = (validated as TCreateDvd).dvds
 
-    const stocks = await stockRepository.saveMany((validated as TDvd).dvds)
+    let returnDvds: Dvd[] = []
 
-    // return serializedRegisterDvdSchema.validate(dvds)
-    return dvds
+    for (let { name, duration, quantity, price } of dvds) {
+      const stock = await stockRepository.save({ quantity, price })
+      const dvd = await dvdRepository.save({ name, duration, stock })
+      returnDvds.push(dvd)
+    }
+
+    return serializedRegisterDvdSchema.validate(returnDvds)
   }
 
   getAllDvds = async () => {
     const dvds = await dvdRepository.getAll()
 
-    return await getAllDvdsSchema.validate(dvds, {
-      stripUnknown: true,
-    })
+    return await dvds
+  }
+
+  buyDvd = async (req: Request) => {
+    const dvd = await stockRepository.buy(req.dvd, req.body.quantity)
+    return dvd
   }
 }
 

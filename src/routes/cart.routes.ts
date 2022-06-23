@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import { hello } from '../controllers'
+import { cartController } from '../controllers'
+import { validateToken } from '../middlewares'
 
 const cartRouter = Router()
 
-cartRouter.put('/pay', hello)
+cartRouter.put('/pay', validateToken, cartController.payCart)
 
 export default cartRouter

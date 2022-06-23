@@ -3,9 +3,10 @@ import { AppDataSource } from '../data-source'
 import { Dvd } from '../entities'
 
 interface IDvdRepo {
-  saveMany: (dvds: Partial<Dvd[]>) => Promise<Dvd[]>
+  save: (dvd: Partial<Dvd>) => Promise<Dvd>
   getAll: (payload: object) => Promise<Dvd[]>
   findOne: (payload: object) => Promise<Dvd>
+  buy: (dvd: Dvd, quantity: number) => Promise<Dvd>
 }
 
 class DvdRepo implements IDvdRepo {
@@ -15,27 +16,19 @@ class DvdRepo implements IDvdRepo {
     this.ormRepo = AppDataSource.getRepository(Dvd)
   }
 
-  saveMany = async (dvds: Dvd[]) => {
-    const insertedDvds = await this.ormRepo
-      .createQueryBuilder()
-      .insert()
-      .values(dvds)
-      .execute()
-
-    const returnDvds: Dvd[] = []
-
-    for (let { id } of insertedDvds.generatedMaps) {
-      returnDvds.push(await this.findOne({ id }))
-    }
-
-    return returnDvds
-  }
+  save = async (dvd: Partial<Dvd>) => await this.ormRepo.save(dvd)
 
   findOne = async (payload: object) => {
     return await this.ormRepo.findOneBy({ ...payload })
   }
 
   getAll = async () => await this.ormRepo.find()
+
+  buy = async (dvd: Dvd, quantity: number) => {
+    const foundDvd = await this.findOne(dvd)
+    foundDvd.stock.quantity -= quantity
+    return await this.save(foundDvd)
+  }
 }
 
 export default new DvdRepo()
